@@ -18,5 +18,14 @@ def result():
         return render_template('home.html', result=False)
 
     ans = processpost(text)
+    
+    for i in range(len(ans)):
+        ans[i]['wordo'] = ans[i]['word']
+        ans[i]['word'] = ans[i]['word'].replace(" ", "&nbsp;")
+    print(ans)
 
     return render_template('home.html', result=True, txt=enumerate(ans))
+
+
+        
+    

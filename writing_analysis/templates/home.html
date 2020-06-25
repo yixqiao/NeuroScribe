@@ -14,6 +14,8 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"> </script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"> </script>
         <script src="static/js/fullpage.min.js"></script>
+
+        <link rel="icon" type="image/png" href="static/img/ns3.png">
     </head>
 
     <body>
@@ -30,7 +32,8 @@
                 {% if result %}
                 
                 <div class="main-container" id="main-container">
-                    <h1 class="animate__animated animate__fadeInDown">Analysis</h1>
+                    <h1 class="animate__animated animate__fadeInDown"><img style="height:100px; display:inline-block;margin-bottom:10px; margin-right:30px;"
+                        src="static/img/t.png">Analysis</h1>
                     <h4 class="animate__animated animate__fadeInDown" style="text-align: center; margin-top: 3%; margin-bottom: 3%">Our machine learning algorithm has processed your text and returned the following areas of improvement:</h4>
                     <div id ="response-div" class="response animate__animated animate__fadeInUp" style="background:#e5e5e5;border-radius: 15px; border: 2px dashed; margin-left: 15%; margin-right: 15%; position: relative;overflow-y:auto;min-height: 200px;">
                         <p class="answer-box" style="user-select: none;
@@ -41,34 +44,34 @@
                             {% for val,d in txt %}
                             
                             {% if d['eval'] == -1%}
-                            {% if not d['word'].isspace() and d['word'] and d['alpha'] %}
-                            <span class="span{{ val }}" onmouseover="badText(this)" onmouseout="unhighlight()" style="font-size: 1.5rem; color: #666;border-radius: 3px; padding-right: 1px; padding-left: 1px;">{{ d['word'] }}</span>
+                            {% if (not d['wordo'].isspace()) and d['wordo'] and d['alpha'] %}
+                            <span class="span{{ val }}" onmouseover="badText(this)" onmouseout="unhighlight()" style="font-size: 1.5rem; color: #666;border-radius: 3px; padding-right: 1px; padding-left: 1px;">{{ d['word']|safe }}</span>
                             {% else %}
-                            <span class="span{{ val }}" style="font-size: 1.5rem; color: #666;border-radius: 3px; padding: 0px;">{{ d['word'] }}</span>
+                            <span class="span{{ val }}" style="font-size: 1.5rem; color: #666;border-radius: 3px; padding: 0px;">{{ d['word']|safe }}</span>
                             {% endif %}
                             
                             {% elif d['eval']/d['best'] >= 0.001 %}
 
-                            <span class="span{{ val }}" style="font-size: 1.5rem; padding-right: 1px; padding-left: 1px;">{{ d['word'] }}</span>
+                            <span class="span{{ val }}" style="font-size: 1.5rem; padding-right: 1px; padding-left: 1px;">{{ d['word']|safe }}</span>
 
                             {% elif d['eval']/d['best'] >= 0.0001 %}
 
                             <span class="span{{ val }}" style="font-size: 1.5rem; background: rgba(255, 255, 0, 0.3); border-radius: 3px; padding-right: 1px; padding-left: 1px;" 
-                            onmouseover="clicked1(this);" onmouseout="unhighlight()">{{ d['word'] }}</span>
-                            <span id="span{{ val }}" class="suggested" style="display:none;">{{ (d['eval']/d['best'])|string + " - " + d['best']|string + " - " + d['bestw']}}</span>
+                            onmouseover="clicked1(this);" onmouseout="unhighlight()">{{ d['word']|safe }}</span>
+                            <span id="span{{ val }}" class="suggested" style="display:none;">{{d['bestw']}}</span>
 
                             {% elif d['eval']/d['best'] >= 0.00001 %}
                             
                             <span class="span{{ val }}" style="font-size: 1.5rem; background: rgba(255, 153, 0, 0.3); border-radius: 3px; padding-right: 1px; padding-left: 2px;" 
-                            onmouseover="clicked2(this);" onmouseout="unhighlight()">{{ d['word'] }}</span>
-                            <span id="span{{ val }}" class="suggested" style="display:none;">{{ (d['eval']/d['best'])|string + " - " + d['best']|string + " - " + d['bestw']}}</span>
+                            onmouseover="clicked2(this);" onmouseout="unhighlight()">{{ d['word']|safe }}</span>
+                            <span id="span{{ val }}" class="suggested" style="display:none;">{{d['bestw']}}</span>
 
 
                             {% else %}
 
                             <span class="span{{ val }}" style="font-size: 1.5rem; background: rgba(255, 0, 0, 0.3); border-radius: 3px; padding-right: 1px; padding-left: 1px;" 
-                            onmouseover="clicked3(this);" onmouseout="unhighlight()">{{ d['word'] }}</span>
-                            <span id="span{{ val }}" class="suggested" style="display:none;">{{ (d['eval']/d['best'])|string + " - " + d['best']|string + " - " + d['bestw']}}</span>
+                            onmouseover="clicked3(this);" onmouseout="unhighlight()">{{ d['word']|safe }}</span>
+                            <span id="span{{ val }}" class="suggested" style="display:none;">{{d['bestw']}}</span>
                             
                             {% endif %}
                             {% endfor %}
@@ -163,7 +166,7 @@
                     }
 
 
-                    document.body.addEventListener('click', fn, true);
+                    // document.body.addEventListener('click', fn, true);
                 </script>
                 
                 <script>
@@ -174,7 +177,9 @@
                 </script>
                 {% else %}
                 <div class="main-container" id="main-container">
-                    <h1 class="animate__animated animate__fadeInDown"><span style="font-size: 5.5rem; font-family: abel, sans-serif !important;">Neuro</span>Scribe</h1>
+                    
+                    <h1 class="animate__animated animate__fadeInDown"><img style="height:100px; display:inline-block;margin-bottom:10px; margin-right:30px;"
+                        src="static/img/t.png"><span style="font-size: 5.5rem; font-family: abel, sans-serif !important;">Neuro</span>Scribe</h1>
 
 
                     {% with messages = get_flashed_messages() %}
@@ -240,6 +245,1086 @@
                                 } else {
                                     analyzing.innerHTML = "Analyzing";
                                     a = 3;
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
                                 }
                             }
                         }

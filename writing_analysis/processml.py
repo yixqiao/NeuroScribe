@@ -14,6 +14,7 @@ from tensorflow.keras.backend import set_session
 
 import string
 import math
+import re
 
 tf.config.threading.set_intra_op_parallelism_threads(16)
 tf.config.threading.set_inter_op_parallelism_threads(16)
@@ -55,7 +56,6 @@ def cleanup(post):
     post = post.translate(str.maketrans("""!"#$%&()*+,-./:;<=>?@[\]^_`{|}~""", " " * len("""!"#$%&()*+,-./:;<=>?@[\]^_`{|}~"""))) # No apostrophes                
 
     ps = post.split()
-    ps = post.split()
     ps2 = ps # Split punctuation
 
     ps3 = [] # Remove only punctuation
@@ -85,12 +85,13 @@ def load_resources():
 model = load_resources()
 
 stopwords = """a about above after again against all am an and any are aren't as at be because been before being below between both but by can't cannot could couldn't did didn't do does doesn't doing don't down during each few for from further had hadn't has hasn't have haven't having he he'd he'll he's her here here's hers herself him himself his how how's i i'd i'll i'm i've if in into is isn't it it's its itself let's me more most mustn't my myself no nor not of off on once only or other ought our ours ourselves out over own same shan't she she'd she'll she's should shouldn't so some such than that that's the their theirs them themselves then there there's these they they'd they'll they're they've this those through to too under until up very was wasn't we we'd we'll we're we've were weren't what what's when when's where where's which while who who's whom why why's with won't would wouldn't you you'd you'll you're you've your yours yourself yourselves""".split()
-stopwords += "urllink de di la".split()
+stopwords += "urllink de di la en".split()
 
 def processpost(text):
     max_length = 10
     ml2 = max_length//2
     
+    text = " " + text + " "
     text_lower = text.lower()
     
     encoded_full = tokenNL(cleanup(text_lower))
@@ -134,66 +135,15 @@ def processpost(text):
 
         # print("%6.3f / %6.3f" % (yhat[0,int(encoded_full[i])] * 100, np.amax(yhat) * 100))
         
-        prevEnd = text_lower[prevLoc:].find(curword) + prevLoc
+        prevEnd = prevLoc
+        searchResult = re.search("[^a-z]" + curword + "[^a-z]", text_lower[prevLoc:])
+        if curword != "" and searchResult is not None:
+          prevEnd = searchResult.start() + prevLoc + 1
+        
         if(prevLoc < prevEnd):
-            out.append({"word": text[prevLoc:prevEnd], "eval": -1, "best": -1, "bestw": ""})
+            out.append({"word": text[prevLoc:prevEnd], "eval": -1, "best": -1, "bestw": "", "alpha": any(i in text[prevLoc:prevEnd] for i in string.ascii_letters)})
         out.append({"word": text[prevEnd:prevEnd+len(curword)], "eval": evalv, "best": math.pow(bestv, 2), "bestw": maxw})
-        prevLoc = prevEnd + len(curword)
+        if searchResult is not None:
+          prevLoc = prevEnd + len(curword)
     out.append({"word": text[prevLoc:], "eval": -1, "best": -1, "bestw": "", "alpha": any(i in text[prevLoc:] for i in string.ascii_letters)})
     return out
-
-def processpost_old(text):
-  max_length = 10
-  
-  encoded_full = tokenizer.texts_to_sequences([text])[0]
-  
-  encoded_text = []
-  for i in range(len(encoded_full)):
-    for word, index in tokenizer.word_index.items():
-      if index == encoded_full[i]:
-        encoded_text.append(word)
-        break
-  text_lower = text.lower()
-  encoded = []
-  out = []
-  
-  prevLoc = 0
-  for i in range(len(encoded_full)):
-    encoded = pad_sequences([encoded_full[:i]], maxlen=max_length, padding='pre')
-    # print(encoded)
-    # predict probabilities for each word
-    with graph.as_default():
-      set_session(sess)
-      yhat = model.predict(encoded, verbose=0)
-    curword = ""
-    for word, index in tokenizer.word_index.items():
-      if index == encoded_full[i]:
-        curword = word
-        break
-    
-    maxw = np.argmax(yhat)
-    for word, index in tokenizer.word_index.items():
-      if index == maxw:
-        maxw = word
-        break
-    
-    maxw = np.argmax(yhat)
-    for word, index in tokenizer.word_index.items():
-      if index == maxw:
-        maxw = word
-        break
-    
-    #print("%8.4f (%6.3f / %6.3f) %s" % (yhat[0,encoded_full[i]]/np.amax(yhat) * 100,
-    #                                      yhat[0,encoded_full[i]] * 100, np.amax(yhat) * 100, maxw))
-    
-
-    # print("%6.3f / %6.3f" % (yhat[0,encoded_full[i]] * 100, np.amax(yhat) * 100))
-    prevEnd = text_lower[prevLoc:].find(curword) + prevLoc
-    if(prevLoc < prevEnd):
-      out.append({"word": text[prevLoc:prevEnd], "eval": -1, "best": -1, "bestw": ""})
-    out.append({"word": text[prevEnd:prevEnd+len(curword)], "eval": yhat[0,encoded_full[i]], "best": np.amax(yhat), "bestw": maxw})
-    prevLoc = prevEnd + len(curword)
-  out.append({"word": text[prevLoc:], "eval": -1, "best": -1, "bestw": ""})
-
-  return out
- 

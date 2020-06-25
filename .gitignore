@@ -3,3 +3,4 @@ writing_analysis/model.h5
 *.h5
 *.hdf5
 *.dat
+*.7z
