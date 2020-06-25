@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet"> 
+        <link href="static/css/main.css" rel="stylesheet">
+        <link href="static/css/button.css" rel="stylesheet">
+        <link href="static/css/fullpage.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+
+        <script src="static/js/jquery-1.11.1.min.js"></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"> </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"> </script>
+        <script src="static/js/fullpage.min.js"></script>
+    </head>
+
+    <body>
+
+        <div id="fullpage">
+            <div class="section">
+<!-- 
+                {% if not result %}
+                <div id="particles-js">      
+                    <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;"></canvas> 
+                </div>                  
+                {% endif %} -->
+                
+                {% if result %}
+                
+                <div class="main-container" id="main-container">
+                    <h1 class="animate__animated animate__fadeInDown">Analysis</h1>
+                    <h4 class="animate__animated animate__fadeInDown" style="text-align: center; margin-top: 3%; margin-bottom: 3%">Our machine learning algorithm has processed your text and returned the following areas of improvement:</h4>
+                    <div id ="response-div" class="response animate__animated animate__fadeInUp" style="background:#e5e5e5;border-radius: 15px; border: 2px dashed; margin-left: 15%; margin-right: 15%; position: relative;overflow-y:auto;min-height: 200px;">
+                        <p class="answer-box" style="user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;font-size: 0;margin-left: 0 !important; padding: 15px;height: 40vh;">
+                            {% for val,d in txt %}
+                            
+                            {% if d['eval'] == -1%}
+                            {% if not d['word'].isspace() and d['word'] and d['alpha'] %}
+                            <span class="span{{ val }}" onmouseover="badText(this)" onmouseout="unhighlight()" style="font-size: 1.5rem; color: #666;border-radius: 3px; padding-right: 1px; padding-left: 1px;">{{ d['word'] }}</span>
+                            {% else %}
+                            <span class="span{{ val }}" style="font-size: 1.5rem; color: #666;border-radius: 3px; padding: 0px;">{{ d['word'] }}</span>
+                            {% endif %}
+                            
+                            {% elif d['eval']/d['best'] >= 0.001 %}
+
+                            <span class="span{{ val }}" style="font-size: 1.5rem; padding-right: 1px; padding-left: 1px;">{{ d['word'] }}</span>
+
+                            {% elif d['eval']/d['best'] >= 0.0001 %}
+
+                            <span class="span{{ val }}" style="font-size: 1.5rem; background: rgba(255, 255, 0, 0.3); border-radius: 3px; padding-right: 1px; padding-left: 1px;" 
+                            onmouseover="clicked1(this);" onmouseout="unhighlight()">{{ d['word'] }}</span>
+                            <span id="span{{ val }}" class="suggested" style="display:none;">{{ (d['eval']/d['best'])|string + " - " + d['best']|string + " - " + d['bestw']}}</span>
+
+                            {% elif d['eval']/d['best'] >= 0.00001 %}
+                            
+                            <span class="span{{ val }}" style="font-size: 1.5rem; background: rgba(255, 153, 0, 0.3); border-radius: 3px; padding-right: 1px; padding-left: 2px;" 
+                            onmouseover="clicked2(this);" onmouseout="unhighlight()">{{ d['word'] }}</span>
+                            <span id="span{{ val }}" class="suggested" style="display:none;">{{ (d['eval']/d['best'])|string + " - " + d['best']|string + " - " + d['bestw']}}</span>
+
+
+                            {% else %}
+
+                            <span class="span{{ val }}" style="font-size: 1.5rem; background: rgba(255, 0, 0, 0.3); border-radius: 3px; padding-right: 1px; padding-left: 1px;" 
+                            onmouseover="clicked3(this);" onmouseout="unhighlight()">{{ d['word'] }}</span>
+                            <span id="span{{ val }}" class="suggested" style="display:none;">{{ (d['eval']/d['best'])|string + " - " + d['best']|string + " - " + d['bestw']}}</span>
+                            
+                            {% endif %}
+                            {% endfor %}
+                            
+                        </p>
+                        
+                    </div>
+                    <h5 class="animate__animated animate_fadeInUp" style="text-align: center; margin-top: 3%; margin-bottom: 3%">Scroll down for more information on how to interpret these results.</h5>
+                    <span id="tooltip"
+                        style="font-size:1.5rem;display:none;position: absolute; background:rgba(199, 220, 245, 0.95); border: 1px dashed; border-radius: 5px; padding-right: 4px; padding-left: 4px; min-width: 20px;"></span>
+                </div>
+
+                
+                <script>
+                    var prev = false;
+                    var prevColor = "";
+
+                    var tooltip = document.getElementById("tooltip");
+                    var resultDiv = document.getElementById("response-div");
+
+                    function unhighlight() {
+                        document.getElementById("tooltip").style.display = "none";
+                        if (prev != false) {
+                            prev.style.background = prevColor;
+                        }
+                    }
+
+                    function badText(el) {
+                        el.style.background = "rgba(0, 0, 0, 0.05)";
+                        prev = el;
+                        prevColor = "rgba(255, 255, 0, 0)";
+
+                        var tooltip = document.getElementById("tooltip");
+                        tooltip.innerText = "Unknown";
+                        tooltip.style.display = "inline-block";
+                        tooltip.style.left = (el.offsetLeft + resultDiv.offsetLeft + 2)+ "px";
+                        var p = el.offsetTop;
+                        tooltip.style.top = (-40 + p + resultDiv.offsetTop - resultDiv.scrollTop)+ "px";
+                        
+                    }
+
+                    function clicked1(el) {
+                        el.style.background = "rgba(255,255,0,0.7)";
+                        prev = el;
+                        prevColor = "rgba(255, 255, 0, 0.3)";
+
+                        var tooltip = document.getElementById("tooltip");
+                        tooltip.innerText = document.getElementById(el.className).innerText;
+                        tooltip.style.display = "inline-block";
+                        tooltip.style.left = (el.offsetLeft + resultDiv.offsetLeft + 2) + "px";
+                        var p = el.offsetTop;
+                        tooltip.style.top = (-40 + p + resultDiv.offsetTop - resultDiv.scrollTop) + "px";
+                        
+
+                    }
+                    function clicked2(el) {
+                        el.style.background = "rgba(255,153,0,0.7)";
+                        prev = el;
+                        prevColor = "rgba(255, 153, 0, 0.3)";
+
+                        var tooltip = document.getElementById("tooltip");
+                        tooltip.innerText = document.getElementById(el.className).innerText;
+                        tooltip.style.display = "inline-block";
+                        tooltip.style.left = (el.offsetLeft + resultDiv.offsetLeft + 2) + "px";
+                        var p = el.offsetTop;
+                        tooltip.style.top = (-40 + p + resultDiv.offsetTop - resultDiv.scrollTop) + "px";
+                        
+
+
+                    }
+                    function clicked3(el) {
+                        el.style.background = "rgba(255,0,0,0.7)";
+                        prev = el;
+                        prevColor = "rgba(255, 0, 0, 0.3)";
+
+                        var tooltip = document.getElementById("tooltip");
+                        tooltip.innerText = document.getElementById(el.className).innerText;
+                        tooltip.style.display = "inline-block";
+                        tooltip.style.left = (el.offsetLeft + resultDiv.offsetLeft + 2) + "px";
+                        var p = el.offsetTop;
+                        tooltip.style.top = (-40 + p + resultDiv.offsetTop - resultDiv.scrollTop) + "px";
+
+
+                    }
+
+                    function fn() {
+                        if (prev != false) {
+                            prev.style.background = prevColor;
+                            prev = false;
+                            prevColor = "";
+                        }
+                    }
+
+
+                    document.body.addEventListener('click', fn, true);
+                </script>
+                
+                <script>
+
+                    document.getElementById('response-div').addEventListener('wheel', function (event) {
+                        event.stopPropagation();
+                    }, true);
+                </script>
+                {% else %}
+                <div class="main-container" id="main-container">
+                    <h1 class="animate__animated animate__fadeInDown"><span style="font-size: 5.5rem; font-family: abel, sans-serif !important;">Neuro</span>Scribe</h1>
+
+
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <h5 style="text-align: center; color: red; margin-top: 2%;" class="animate__animated animate__shakeX">{{ message }}</h5>
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                
+                    <div class="textbox animate__animated animate__fadeInUp" style="text-align: center;">
+                        <form method="POST" action="/" name="analyze_form" id="analyze_form">
+                            <textarea id="form-input" class="form-input" name="text" placeholder="Type Something..."></textarea>
+                            <div class="box-1" style="padding-top: 2%;">
+                                <div class="btn btn-one" onclick="onClick();">
+                                <script>
+                                    function onClick() {
+                                        document.getElementById('main-container').style.display = "none";
+                                        document.getElementById('loading').style.display = "block";
+                                        var analyzing = document.getElementById("analyzing");         
+                                        analyzing.style.marginLeft = ((document.body.clientWidth - analyzing.clientWidth) / 2).toString() + "px";
+                                        document.forms['analyze_form'].submit();
+
+                                    }
+                                </script>
+                                <span>Analyze</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <script>
+                        document.getElementById('form-input').addEventListener('wheel', function (event) {
+                            event.stopPropagation();
+                        }, true);
+                    </script>
+
+                </div>
+                {% endif %}
+                <div id="loading">
+                    <div id="loader" class="lds-dual-ring"></div>
+                    <h3 id="analyzing" style="text-align: left;display:inline-block;">Analyzing</h3>
+                    <script>
+                        window.setInterval(changeDots, 150);
+                        var a = 0;
+                        var analyzing = document.getElementById("analyzing");
+                        var loading = document.getElementById("loading");
+                        function changeDots() {
+                            
+                            if (loading.style.display === "block") {
+                                if(a === 3) {
+                                    analyzing.innerHTML = "Analyzing.";
+                                    a = 2;
+                                } else if (a == 2) {
+                                    analyzing.innerHTML = "Analyzing..";
+                                    a = 1;
+                                } else if (a == 1) {
+                                    analyzing.innerHTML = "Analyzing...";
+                                    a = -1;
+                                } else if (a == -1) {
+                                    analyzing.innerHTML = "Analyzing...";
+                                    a = 0;
+                                } else {
+                                    analyzing.innerHTML = "Analyzing";
+                                    a = 3;
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+                
+            </div>
+            <div class="section">
+                {% if not result %}
+                <div class="about-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">About Us</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>As second-generation immigrants with parents that struggled with learning English, we understand that writing professional English is extremely difficult. To help people who need some help in learning English, or for people who just can't find that perfect word, we developed NeuroScribe. This tool uses Natural Language Processing with TensorFlow to analyze your writing for any suspected errors and also suggest replacements. <br><br><i>Changing the world, one word at a time.</i>
+                            <br><br>Made by <strong>Yixuan Qiao</strong>, <strong>Andy Li</strong>, and <strong>Rohan Bansal</strong> for <a href="https://www.bithacks.io/" target="_blank">BitHacks 2020</a>.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="interpret-section" style="text-align: center;margin: 4vh 10vw; min-width:200px;">
+                    <h2 style="font-family: 'Abel', sans-serif;">How Can I Interpret This?</h2>
+                    <div class="dotted" style="border-radius: 10px; border: 2px dashed; margin-left: 15%; margin-right: 15%; margin-top: 2%; padding: 2%;">
+                        <p>Our deep learning model scans your text and highlights regions and words that it thinks can be replaced with something <strong>better!</strong>
+                            <br>
+                           The program marks a questionable word with one of three colors: <i>yellow, orange, or red.</i>
+                        </p>
+                        <hr width="25%" style="height: 2px; background-color: rgb(34, 31, 31); border: none">
+                        <p>
+                            <br>
+                            <span style="background: rgba(255, 255, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">YELLOW</span><br>This word makes sense in the context of the sentence and is perfectly fine; However, the program may have an alternative.
+                           <br><br>
+                           <span style="background: rgba(255, 153, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">ORANGE</span><br>This word has been marked by the program as not common; It can be replaced with another word.
+                           <br><br>
+                           <span style="background: rgba(255, 0, 0, 0.4); border-radius: 5px; padding-left: 4px; padding-right: 4px;">RED</span><br>This word can be replaced with another word that may change the meaning, as the original is unusual.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
+        <script src="static/js/main.js"></script>
+
+    </body>
+</html>
+
+
