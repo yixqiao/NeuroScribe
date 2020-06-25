@@ -52,17 +52,17 @@
                             <span class="span{{ val }}" style="font-size: 1.5rem; color: #666;border-radius: 3px; padding: 0px;">{{ d['word']|safe }}</span>
                             {% endif %}
                             
-                            {% elif d['eval']/d['best'] >= 0.001 %}
+                            {% elif d['eval']/d['best'] >= 0.01 %}
 
                             <span class="span{{ val }}" style="font-size: 1.5rem; padding-right: 1px; padding-left: 1px;">{{ d['word']|safe }}</span>
 
-                            {% elif d['eval']/d['best'] >= 0.0001 %}
+                            {% elif d['eval']/d['best'] >= 0.001 %}
 
                             <span class="span{{ val }}" style="font-size: 1.5rem; background: rgba(255, 255, 0, 0.3); border-radius: 3px; padding-right: 1px; padding-left: 1px;" 
                             onmouseover="clicked1(this);" onmouseout="unhighlight()">{{ d['word']|safe }}</span>
                             <span id="span{{ val }}" class="suggested" style="display:none;">{{d['bestw']}}</span>
 
-                            {% elif d['eval']/d['best'] >= 0.00001 %}
+                            {% elif d['eval']/d['best'] >= 0.0001 %}
                             
                             <span class="span{{ val }}" style="font-size: 1.5rem; background: rgba(255, 153, 0, 0.3); border-radius: 3px; padding-right: 1px; padding-left: 2px;" 
                             onmouseover="clicked2(this);" onmouseout="unhighlight()">{{ d['word']|safe }}</span>
