@@ -1,4 +1,4 @@
-# WritingAnalysis
+# NeuroScribe
 
 *Changing the world, one word at a time.*
 
