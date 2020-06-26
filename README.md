@@ -8,4 +8,4 @@ As **second-generation immigrants** with parents that struggled with learning En
 
 ***
 
-Built by Yixuan Qiao, Rohan Bansal, and Andy Li for BitHacks 2020.
+Built by Yixuan Qiao, Andy Li, and Rohan Bansal for BitHacks 2020.
