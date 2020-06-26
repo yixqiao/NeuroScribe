@@ -91,8 +91,8 @@ def processpost(text):
     max_length = 10
     ml2 = max_length//2
     
-    text = " " + text + " "
-    text_lower = text.lower()
+    text = text
+    text_lower = " " + text.lower() + " "
     
     encoded_full = tokenNL(cleanup(text_lower))
     
@@ -138,7 +138,7 @@ def processpost(text):
         prevEnd = prevLoc
         searchResult = re.search("[^a-z]" + curword + "[^a-z]", text_lower[prevLoc:])
         if curword != "" and searchResult is not None:
-          prevEnd = searchResult.start() + prevLoc + 1
+          prevEnd = searchResult.start() + prevLoc
         
         if(prevLoc < prevEnd):
             out.append({"word": text[prevLoc:prevEnd], "eval": -1, "best": -1, "bestw": "", "alpha": any(i in text[prevLoc:prevEnd] for i in string.ascii_letters)})
