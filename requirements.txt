@@ -46,7 +46,7 @@ idna==2.9
 importlib-metadata==1.6.1
 influxdb==4.1.1
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 jsmin==2.2.2
 jsonpickle==1.2
 Keras==2.4.2
