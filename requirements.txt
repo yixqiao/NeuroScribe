@@ -76,7 +76,7 @@ ply==3.11
 protobuf==3.12.2
 psutil==5.4.2
 psycopg2==2.8.3
-py==1.8.2
+py==1.10.0
 pyasn1==0.4.2
 pycairo==1.16.2
 pycrypto==2.6.1
